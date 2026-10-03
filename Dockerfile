@@ -4,6 +4,7 @@ WORKDIR /app
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app/src
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev gcc \
@@ -13,7 +14,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
-RUN chmod +x /app/entrypoint.sh
+RUN sed -i 's/\r$//' /app/entrypoint.sh && chmod +x /app/entrypoint.sh
 
 EXPOSE 8000
 ENTRYPOINT ["/app/entrypoint.sh"]
